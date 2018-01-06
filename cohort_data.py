@@ -8,8 +8,8 @@ def unique_houses(filename):
 
     For example:
 
-    >>> unique_houses("cohort_data.txt")
-    set(['Gryffindor', 'Hufflepuff', "Dumbledore's Army", 'Ravenclaw', 'Slytherin'])
+    >>> sorted(unique_houses("cohort_data.txt"))
+    ["Dumbledore's Army", 'Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
 
     """
 
@@ -18,10 +18,11 @@ def unique_houses(filename):
     cohort = open('cohort_data.txt')
     for line in cohort:
         student = line.split('|')
-        if student[2] not in houses:
-            houses.add(student[2])
+        houses.add(student[2])
 
+    houses.remove('')
     return houses
+
 
 
 def sort_by_cohort(filename):
@@ -37,15 +38,31 @@ def sort_by_cohort(filename):
     >>> sort_by_cohort("cohort_data.txt")
     [['Harry Potter', 'Mandy Brocklehurst', 'Ron Weasley', 'Oliver Wood', 'Colin Creevey', 'Cho Chang', 'Michael Corner', 'Draco Malfoy', 'Seamus Finnigan', 'Eddie Carmichael', 'Theodore Nott', 'Terence Higgs', 'Hermione Granger', 'Penelope Clearwater', 'Angelina Johnson', 'Dennis Creevey'], ['Neville Longbottom', 'Cedric Diggory', 'Pansy Parkinson', 'Anthony Goldstein', 'Padma Patil', 'Luna Lovegood', 'Eleanor Branstone', 'Lee Jordan', 'Marietta Edgecombe', 'Andrew Kirke', 'Ginny Weasley', 'Mary Macdonald', 'Blaise Zabini', 'Natalie McDonald', 'Adrian Pucey', 'Hannah Abbott', 'Graham Pritchard', 'Susan Bones', 'Roger Davies', 'Owen Cauldwell'], ['Laura Madley', 'Orla Quirke', 'Parvati Patil', 'Eloise Midgeon', 'Zacharias Smith', 'Cormac McLaggen', 'Lisa Turpin', 'Demelza Robins', 'Ernie Macmillan', 'Millicent Bullstrode', 'Percy Weasley', 'Jimmy Peakes', 'Justin Finch-Fletchley', 'Miles Bletchley', 'Malcolm Baddock'], ['Marcus Belby', 'Euan Abercrombie', 'Vincent Crabbe', 'Ritchie Coote', 'Katie Bell', 'Terry Boot', 'Lavender Brown', 'Gregory Goyle', 'Marcus Flint', 'Dean Thomas', 'Jack Sloper', 'Rose Zeller', 'Stewart Ackerley', 'Fred Weasley', 'George Weasley', 'Romilda Vane', 'Alicia Spinnet', 'Kevin Whitby'], ['Friendly Friar', 'Grey Lady', 'Nearly Headless Nick', 'Bloody Baron']]
     """
-
     all_students = []
-    winter_16 = []
     spring_16 = []
     summer_16 = []
     fall_15 = []
     ghosts = []
+    winter_16 = []
 
-    # Code goes here
+    cohort = open('cohort_data.txt')
+    for line in cohort:
+        line = line.rstrip()
+        student = line.split('|')
+        name = student[0] + ' ' + student[1]
+
+        if student[-1] == "Winter 2016":
+            winter_16.append(name)
+        elif student[-1] == "Spring 2016":
+            spring_16.append(name)
+        elif student[-1] == "Summer 2016":
+            summer_16.append(name)
+        elif student[-1] == "Fall 2015":
+            fall_15.append(name)
+        elif student[-1] == "G":
+            ghosts.append(name)
+
+        all_students = [fall_15, winter_16, spring_16,summer_16, ghosts]
 
     return all_students
 
@@ -74,6 +91,31 @@ def hogwarts_by_house(filename):
     instructors = []
 
     # Code goes here
+    cohort = open('cohort_data.txt')
+    for line in cohort:
+        line = line.rstrip()
+        student = line.split('|')
+        name = student[1]
+
+        if student[2] == "Gryffindor":
+            gryffindor.append(name)
+        elif student[2] == "Hufflepuff":
+            hufflepuff.append(name)
+        elif student[2] == "Slytherin":
+            slytherin.append(name)
+        elif student[2] == "Dumbledore's Army":
+            dumbledores_army.append(name)
+        elif student[2] == "Ravenclaw":
+            ravenclaw.append(name)
+        elif student[-1] == "G":
+            ghosts.append(name)
+        elif student[-1] == "I":
+            instructors.append(name)
+
+    all_students = [gryffindor, slytherin, hufflepuff, ravenclaw, dumbledores_army, ghosts, instructors]
+
+    for house in all_students:
+        house = house.sort()
 
     return all_students
 
@@ -92,8 +134,17 @@ def all_students_tuple_list(filename):
     """
 
     student_list = []
+    cohort = open('cohort_data.txt')
+    
+    for line in cohort:
+        line = line.rstrip()
+        student = line.split('|')
+        name = student[0] + ' ' + student[1]
 
-    # Code goes here
+        if student[-1] != "G" and student[-1] != "I":
+            student_info = (name, student[2], student[3], student[4])
+            student_list.append(student_info)
+    
 
     return student_list
 
@@ -140,8 +191,14 @@ def find_name_duplicates(filename):
     """
 
     duplicate_names = set()
+    # cohort = open('cohort_data.txt')
+    
+    # for line in cohort:
+    #     line = line.rstrip()
+    #     student = line.split('|')
+    #     name = student[0] + ' ' + student[1]
 
-    # Code goes here
+    
 
     return duplicate_names
 
